@@ -2,8 +2,9 @@
 
 namespace BookStoreAPI.Data
 {
-    public class Books
+    public class BooksModel
     {
+        [Key]
         public string Id { get; set; }
 
         [Required(ErrorMessage = "Please Add title property")]

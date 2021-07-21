@@ -1,4 +1,5 @@
-﻿using BookStoreAPI.Data;
+﻿using AutoMapper;
+using BookStoreAPI.Data;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -10,42 +11,28 @@ namespace BookStoreAPI.Repository
     public class BookRepository : IBookRepository
     {
         private readonly BookStoreContext _context;
+        private readonly IMapper _mapper;
 
-        public BookRepository(BookStoreContext context)
+        public BookRepository(BookStoreContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
-        public async Task<List<Books>> GetAllBooksAsync()
+        public async Task<List<BooksModel>> GetAllBooksAsync()
         {
-            var records = await _context.Books.Select(x => new Books() {
-                Id = x.Id,
-                Title = x.Title,
-                Author = x.Author,
-                CoverImage = x.CoverImage,
-                Description = x.Description,
-                Price = x.Price
-            }).ToListAsync();
+            var records = await _context.Books.ToListAsync();
 
-            return records;
+            return _mapper.Map <List<BooksModel>>(records);
         }
-        public async Task<Books> GetBookByIdAsync(string bookId)
+        public async Task<BooksModel> GetBookByIdAsync(string bookId)
         {
-            var record = await _context.Books.Where(x => x.Id == bookId).Select(x => new Books()
-            {
-                Id = x.Id,
-                Title = x.Title,
-                Author = x.Author,
-                CoverImage = x.CoverImage,
-                Description = x.Description,
-                Price = x.Price
-            }).FirstOrDefaultAsync();
-
-            return record;
+            var book = await _context.Books.FindAsync(bookId);
+            return _mapper.Map<BooksModel>(book);
         }
 
-        public async Task<string> AddBookAsync(Books bookModel)
+        public async Task<string> AddBookAsync(BooksModel bookModel)
         {
-            var book = new Books()
+            var book = new BooksModel()
             {
                 Id = bookModel.Id,
                 Title = bookModel.Title,
@@ -60,9 +47,9 @@ namespace BookStoreAPI.Repository
             return book.Id;
         }
 
-        public async Task UpdateBookAsync(string bookId, Books bookModel)
+        public async Task UpdateBookAsync(string bookId, BooksModel bookModel)
         {
-            var book = new Books()
+            var book = new BooksModel()
             {
                 Id = bookModel.Id,
                 Title = bookModel.Title,
@@ -89,7 +76,7 @@ namespace BookStoreAPI.Repository
 
         public async Task DeleteBookAsync(string bookId)
         {
-            var book = new Books() { Id = bookId};
+            var book = new BooksModel() { Id = bookId};
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
 

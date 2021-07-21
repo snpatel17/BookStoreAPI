@@ -18,7 +18,7 @@ namespace BookStoreAPI.Data
                     return;   // Data was already seeded
                 }
                 context.Books.AddRange(
-                new Books
+                new BooksModel
                 {
                     Id = "BeaRe123",
                     Title = "Beach Read",
@@ -27,7 +27,7 @@ namespace BookStoreAPI.Data
                     CoverImage = "emilyhenryBR.jpeg",
                     Price = "$11.99"
                 },
-                new Books
+                new BooksModel
                 {
                     Id = "BomMa456",
                     Title = "Bomber Mafia",
