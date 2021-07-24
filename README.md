@@ -1,9 +1,10 @@
 # BookStoreAPI
 
-BookStore API to perform CRUD Operations using C# and .NET Core 
-Using in memory entity framework
+• BookStore API to perform CRUD Operations using
+• Technologies used :- C# and .NET Core, 
+• Data Storage :- in-memory entity framework 
 
-Testing all operations using Postman 
+• Testing all operations using Postman 
 
-Link for Postman Documentation:
-https://documenter.getpostman.com/view/14276043/TzsWtqAd
+• Link for Postman Documentation:
+  https://documenter.getpostman.com/view/14276043/TzsWtqAd
